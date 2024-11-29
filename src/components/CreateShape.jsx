@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Triangle, Square, Circle } from "lucide-react";
+import { FaCircle, FaSquare, FaPlay } from "react-icons/fa";
 
 function CreateShape() {
   const [shape, setShape] = useState("circle");
@@ -15,9 +15,9 @@ function CreateShape() {
   const [generatedCode, setGeneratedCode] = useState("");
 
   const shapeIcons = {
-    triangle: Triangle,
-    square: Square,
-    circle: Circle,
+    triangle: FaPlay,
+    square: FaSquare,
+    circle: FaCircle,
   };
 
   const generateCode = () => {
@@ -50,7 +50,6 @@ function CreateShape() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#101212] to-[#08201D] text-white flex flex-col items-center">
-      {/* Header */}
       <div className="text-center my-6">
         <h1 className="text-6xl font-bold mb-2 animate-pulse text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-blue-300 to-white">
           Shape Forge
@@ -59,11 +58,8 @@ function CreateShape() {
       </div>
 
       <div className="flex w-full px-6">
-        {/* Left Panel */}
         <div className="w-1/2 pl-6 py-6 flex flex-col items-start space-y-6">
-          {/* Customization Options */}
           <div className="space-y-6 w-full">
-            {/* Dimensions */}
             <div>
               <label className="block text-sm mb-1">Height: {height}px</label>
               <input
@@ -92,8 +88,6 @@ function CreateShape() {
                 }}
               />
             </div>
-
-            {/* Border Radius */}
             {["topLeft", "topRight", "bottomLeft", "bottomRight"].map(
               (corner) => (
                 <div key={corner}>
@@ -124,8 +118,6 @@ function CreateShape() {
                 </div>
               )
             )}
-
-            {/* Background Color */}
             <div>
               <label className="block text-sm mb-1">Background Color</label>
               <input
@@ -136,8 +128,6 @@ function CreateShape() {
               />
             </div>
           </div>
-
-          {/* Generate Code Button */}
           <button
             onClick={generateCode}
             className="mt-auto px-6 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-all"
@@ -146,9 +136,7 @@ function CreateShape() {
           </button>
         </div>
 
-        {/* Right Panel */}
         <div className="w-1/2 pr-6 py-6 flex flex-col items-center space-y-6">
-          {/* Shape Selector */}
           <div className="flex space-x-6 mb-6">
             {Object.entries(shapeIcons).map(([shapeName, ShapeIcon]) => (
               <button
@@ -165,7 +153,6 @@ function CreateShape() {
             ))}
           </div>
 
-          {/* Shape Preview */}
           <div
             style={{
               width: shape === "triangle" ? 0 : `${width}px`,
@@ -187,8 +174,6 @@ function CreateShape() {
           />
         </div>
       </div>
-
-      {/* Generated Code Display (Only Visible When Generated) */}
       {generatedCode && (
         <div className="w-3/4 mt-6 p-4 bg-gray-800 rounded-lg">
           <h3 className="text-lg font-semibold mb-2">Generated Code:</h3>
