@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaCircle, FaSquare, FaPlay } from "react-icons/fa";
+import { FaCircle, FaSquare, FaPlay } from "react-icons/fa"; // Import icons from react-icons
 
 function CreateShape() {
   const [shape, setShape] = useState("circle");
@@ -37,7 +37,11 @@ function CreateShape() {
 <div style="
   width: ${width}px;
   height: ${height}px;
-  border-radius: ${borderRadius.topLeft}% ${borderRadius.topRight}% ${borderRadius.bottomRight}% ${borderRadius.bottomLeft}% ;
+  border-radius: ${
+    shape === "circle"
+      ? "50%"
+      : `${borderRadius.topLeft}% ${borderRadius.topRight}% ${borderRadius.bottomRight}% ${borderRadius.bottomLeft}%`
+  };
   background-color: ${bgColor};
 "></div>
       `.trim();
@@ -50,6 +54,7 @@ function CreateShape() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#101212] to-[#08201D] text-white flex flex-col items-center">
+      {/* Header */}
       <div className="text-center my-6">
         <h1 className="text-6xl font-bold mb-2 animate-pulse text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-blue-300 to-white">
           Shape Forge
@@ -58,8 +63,11 @@ function CreateShape() {
       </div>
 
       <div className="flex w-full px-6">
+        {/* Left Panel */}
         <div className="w-1/2 pl-6 py-6 flex flex-col items-start space-y-6">
+          {/* Customization Options */}
           <div className="space-y-6 w-full">
+            {/* Dimensions */}
             <div>
               <label className="block text-sm mb-1">Height: {height}px</label>
               <input
@@ -88,36 +96,41 @@ function CreateShape() {
                 }}
               />
             </div>
-            {["topLeft", "topRight", "bottomLeft", "bottomRight"].map(
-              (corner) => (
-                <div key={corner}>
-                  <label className="block text-sm mb-1">
-                    {corner.replace(/([A-Z])/g, " $1")} Radius:{" "}
-                    {borderRadius[corner]}%
-                  </label>
-                  <input
-                    type="range"
-                    min={0}
-                    max={100}
-                    value={borderRadius[corner]}
-                    onChange={(e) =>
-                      setBorderRadius({
-                        ...borderRadius,
-                        [corner]: Number(e.target.value),
-                      })
-                    }
-                    className="w-full appearance-none h-2 rounded-lg focus:outline-none transition-all"
-                    style={{
-                      background: calculateGradient(
-                        borderRadius[corner],
-                        0,
-                        100
-                      ),
-                    }}
-                  />
-                </div>
-              )
-            )}
+
+            {/* Border Radius */}
+            {shape !== "circle" &&
+              ["topLeft", "topRight", "bottomLeft", "bottomRight"].map(
+                (corner) => (
+                  <div key={corner}>
+                    <label className="block text-sm mb-1">
+                      {corner.replace(/([A-Z])/g, " $1")} Radius:{" "}
+                      {borderRadius[corner]}%
+                    </label>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      value={borderRadius[corner]}
+                      onChange={(e) =>
+                        setBorderRadius({
+                          ...borderRadius,
+                          [corner]: Number(e.target.value),
+                        })
+                      }
+                      className="w-full appearance-none h-2 rounded-lg focus:outline-none transition-all"
+                      style={{
+                        background: calculateGradient(
+                          borderRadius[corner],
+                          0,
+                          100
+                        ),
+                      }}
+                    />
+                  </div>
+                )
+              )}
+
+            {/* Background Color */}
             <div>
               <label className="block text-sm mb-1">Background Color</label>
               <input
@@ -128,6 +141,8 @@ function CreateShape() {
               />
             </div>
           </div>
+
+          {/* Generate Code Button */}
           <button
             onClick={generateCode}
             className="mt-auto px-6 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-all"
@@ -136,7 +151,9 @@ function CreateShape() {
           </button>
         </div>
 
+        {/* Right Panel */}
         <div className="w-1/2 pr-6 py-6 flex flex-col items-center space-y-6">
+          {/* Shape Selector */}
           <div className="flex space-x-6 mb-6">
             {Object.entries(shapeIcons).map(([shapeName, ShapeIcon]) => (
               <button
@@ -153,11 +170,15 @@ function CreateShape() {
             ))}
           </div>
 
+          {/* Shape Preview */}
           <div
             style={{
               width: shape === "triangle" ? 0 : `${width}px`,
               height: shape === "triangle" ? 0 : `${height}px`,
-              borderRadius: `${borderRadius.topLeft}% ${borderRadius.topRight}% ${borderRadius.bottomRight}% ${borderRadius.bottomLeft}%`,
+              borderRadius:
+                shape === "circle"
+                  ? "50%"
+                  : `${borderRadius.topLeft}% ${borderRadius.topRight}% ${borderRadius.bottomRight}% ${borderRadius.bottomLeft}%`,
               backgroundColor: shape === "triangle" ? "transparent" : bgColor,
               borderLeft:
                 shape === "triangle"
@@ -174,6 +195,8 @@ function CreateShape() {
           />
         </div>
       </div>
+
+      {/* Generated Code Display (Only Visible When Generated) */}
       {generatedCode && (
         <div className="w-3/4 mt-6 p-4 bg-gray-800 rounded-lg">
           <h3 className="text-lg font-semibold mb-2">Generated Code:</h3>
